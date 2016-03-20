@@ -1,6 +1,6 @@
 <?php
 
-namespace mongoyii;
+namespace sammaye\mongoyii;
 
 use CException;
 

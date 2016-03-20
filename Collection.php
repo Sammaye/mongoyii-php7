@@ -1,6 +1,6 @@
 <?php
 
-namespace monogyii;
+namespace sammaye\monogyii;
 
 use Yii;
 

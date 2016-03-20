@@ -1,6 +1,6 @@
 <?php
 
-namespace mongoyii;
+namespace sammaye\mongoyii;
 
 use ReflectionClass;
 
@@ -14,9 +14,9 @@ use MongoDB\Driver\WriteConcern;
 use MongoDB\Driver\ReadPreference;
 use MongoDB\BSON\ObjectID;
 
-use mongoyii\Database;
-use mongoyii\Collection;
-use mongoyii\Exception;
+use sammaye\mongoyii\Database;
+use sammaye\mongoyii\Collection;
+use sammaye\mongoyii\Exception;
 
 /**
  * EMongoClient
@@ -155,7 +155,7 @@ class Client extends CApplicationComponent
 		}
 
 		// We copy this function to add the subdocument validator as a built in validator
-		CValidator::$builtInValidators['subdocument'] = 'mongoyii\validators\SubdocumentValidator';
+		CValidator::$builtInValidators['subdocument'] = 'sammaye\mongoyii\validators\SubdocumentValidator';
 
 		$this->client = new Client($this->uri, $this->options);
 

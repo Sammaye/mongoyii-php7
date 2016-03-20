@@ -1,6 +1,6 @@
 <?php
 
-namespace mongoyii\validators;
+namespace sammaye\mongoyii\validators;
 
 use MongoDB\BSON\ObjectID;
 
@@ -8,7 +8,7 @@ use Yii;
 use CValidator;
 use CHtml;
 
-use mongoyii\Document;
+use sammaye\mongoyii\Document;
 
 /**
  * EExistValidator validates that the attribute value exists in a table.

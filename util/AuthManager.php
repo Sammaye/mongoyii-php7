@@ -1,6 +1,6 @@
 <?php
 
-namespace mongoyii\util;
+namespace sammaye\mongoyii\util;
 
 use Yii;
 use CPhpAuthManager;

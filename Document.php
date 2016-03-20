@@ -1,6 +1,6 @@
 <?php
 
-namespace mongoyii;
+namespace sammaye\mongoyii;
 
 use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\Regex;
@@ -9,10 +9,10 @@ use Yii;
 use CMap;
 use CModelEvent;
 
-use mongoyii\Model;
-use mongoyii\Query;
-use mongoyii\DataProvider;
-use mongoyii\Exception;
+use sammaye\mongoyii\Model;
+use sammaye\mongoyii\Query;
+use sammaye\mongoyii\DataProvider;
+use sammaye\mongoyii\Exception;
 
 /**
  * EMongoDocument

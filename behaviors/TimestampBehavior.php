@@ -1,13 +1,13 @@
 <?php
 
-namespace mongoyii\behaviors;
+namespace sammaye\mongoyii\behaviors;
 
 use MongoDB\BSON\UTCDateTime;
 
 use Yii;
 use CActiveRecordBehavior;
 
-use mongoyii\Exception;
+use sammaye\mongoyii\Exception;
 
 /**
  * CTimestampBehavior class file.
