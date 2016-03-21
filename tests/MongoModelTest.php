@@ -41,7 +41,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoModel::getDbConnection
+	 * @covers sammaye\mongoyii\Model::getDbConnection
 	 */
 	public function testGetDbConnection()
 	{
@@ -51,7 +51,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoModel::getDocument
+	 * @covers sammaye\mongoyii\Model::getDocument
 	 */
 	public function testGetDocument()
 	{
@@ -65,7 +65,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoModel::getRawDocument
+	 * @covers sammaye\mongoyii\Model::getRawDocument
 	 */
 	public function testGetRawDocument()
 	{
@@ -79,7 +79,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoModel::getJSONDocument
+	 * @covers sammaye\mongoyii\Model::getJSONDocument
 	 */
 	public function testGetJSONDocument()
 	{
@@ -93,7 +93,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoModel::getBSONDocument
+	 * @covers sammaye\mongoyii\Model::getBSONDocument
 	 */
 	public function testGetBSONDocument()
 	{

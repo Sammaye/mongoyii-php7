@@ -30,7 +30,7 @@ class MongoCursorTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoCursor::__construct
+	 * @covers sammaye\mongoyii\Cursor::__construct
 	 */
 	public function testDirectInstantiation()
 	{
@@ -38,7 +38,7 @@ class MongoCursorTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoCriteria
+	 * @covers sammaye\mongoyii\Query
 	 */
 	public function testEMongoCriteria()
 	{
