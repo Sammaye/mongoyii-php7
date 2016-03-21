@@ -1,6 +1,6 @@
 # MongoYii-php7
 
-A PHP7 edition of [mongoyii](http://sammaye.github.io/MongoYii) designed and working with the [new MongoDB driver](http://php.net/manual/en/set.mongodb.php)
+A PHP7 edition of [mongoyii](http://sammaye.github.io/MongoYii) designed for and working with the [new MongoDB driver](http://php.net/manual/en/set.mongodb.php)
 
 ## About this Documentation
 
@@ -289,11 +289,41 @@ Hopefully, this should take some of the guess work out of building applications.
 
 ## Notes About Quirks
 
-- The MongoDB driver's PHPLib returns subdocuments as `ArrayObject`s. This means you need to type cast them via `(array)$subdoc` first before you use them in display and forms etc.
+
+### Subdocuments
+
+The MongoDB driver's PHPLib returns subdocuments as `ArrayObject`s. This means you need to type cast them via `(array)$subdoc` first before you use them in display and forms etc.
+
+### BSON serialisation
+
+Make sure you do not use ObjectID in your session ID. This is because of this [issue whereby 
+you cannot serialise BSON objects yet](https://jira.mongodb.org/browse/PHPC-460).
+
+As an exmaple, her is a potential `UserIdentity` `authenticate` method you can use (taken form my example application too):
+```php
+public function authenticate()
+{
+	$record=User::model()->findOne(array('username' => $this->username));
+	if ($record === null) {
+		$this->errorCode = self::ERROR_USERNAME_INVALID;
+	} else if ($record->password !== crypt($this->password, $record->password)) { // check crypted password against the one provided
+		$this->errorCode = self::ERROR_PASSWORD_INVALID;
+	} else {
+		$this->_id = (String)$record->_id;
+		$this->errorCode = self::ERROR_NONE;
+	}
+	return !$this->errorCode;
+}
+```
+
+Notice the line: `$this->_id = (String)$record->_id;` it is extremely important or else nothing will work!
 
 ## Stuff Not Done
 
-- GridFs. Not my fault. It is actually not there yet in the PHPLib!
+### GridFs
+
+Not my fault. It is actually not there yet in the PHPLib!
+
 
 ## And We Are... Done!
 
