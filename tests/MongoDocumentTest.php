@@ -28,18 +28,7 @@ class MongoDocumentTest extends CTestCase
 			array('name' => 'cars')
 		);
 
-		$docsLinkedByDBRef=array(
-			array('name' => 'python'),
-			array('name' => 'java'),
-			array('name' => 'php'),
-			array('name' => 'lisp'),
-			array('name' => 'C'),
-			array('name' => 'Objective C'),
-			array('name' => 'C++'),
-			array('name' => 'ruby'),
-		);
-
-		foreach(array(array('class' => 'Interest','data' => $childDocs), array('class' => 'Skill','data' => $docsLinkedByDBRef)) as $subgroup){
+		foreach(array(array('class' => 'Interest','data' => $childDocs)) as $subgroup){
 			foreach($subgroup['data'] as $doc){
 				$i = new $subgroup['class']();
 				foreach($doc as $k => $v){
@@ -50,8 +39,6 @@ class MongoDocumentTest extends CTestCase
 		}
 
 		// Lets make sure those child docs actually went in
-		$skills = iterator_to_array(Skill::model()->find());
-		$this->assertTrue(count($skills) > 0);
 		$c = Interest::model()->find();
 		$this->assertTrue($c->count() > 0);
 
@@ -70,20 +57,6 @@ class MongoDocumentTest extends CTestCase
 			}
 			$u->interests = $interest_ids;
 
-			//Let`s take random skill as primary for this user
-			$primarySkill = $skills[array_rand($skills)]->_id;
-			$u->mainSkill = MongoDBRef::create(Skill::model()->collectionName(), $primarySkill);
-
-			//Now, lets pick array of secondary skills
-			$allSecondarySkills = array();
-			foreach(array_rand($skills, rand(3, 5)) as $secondarySkill){
-				if ($secondarySkill == $primarySkill){
-					continue;
-				}
-				array_push($allSecondarySkills, MongoDBRef::create(Skill::model()->collectionName(), $skills[$secondarySkill]->_id));
-			}
-
-			$u->otherSkills = $allSecondarySkills;
 			$this->assertTrue($u->save());
 			$user_ids[] = $u->_id;
 		}
@@ -140,11 +113,11 @@ class MongoDocumentTest extends CTestCase
 	public function testModel()
 	{
 		$c = User::model();
-		$this->assertInstanceOf('EMongoDocument', $c);
+		$this->assertInstanceOf('sammaye\mongoyii\Document', $c);
 	}
 
 	/**
-	 * @covers EMongoDocument::save
+	 * @covers sammaye\mongoyii\Document::save
 	 */
 	public function testSaving()
 	{
@@ -153,19 +126,19 @@ class MongoDocumentTest extends CTestCase
 		$this->assertTrue($c->save());
 
 		$r = User::model()->find();
-		$this->assertTrue($r->count()>0);
+		$this->assertTrue(count(iterator_to_array($r))>0);
 
 		foreach($r as $doc){
 			$doc->username = "dan";
 			$this->assertTrue($doc->save());
 		}
 		// Dan, is it you? 
-		$r = User::model()->findOne(array('username' => 'dan') , array('username' => 1));
+		$r = User::model()->findOne(['username' => 'dan'] , ['projection' => ['username' => 1));
 		$this->assertEquals('dan', $r->username);
 	}
 
 	/**
-	 * @covers EMongoDocument::delete
+	 * @covers sammaye\mongoyii\Document::delete
 	 */
 	public function testDeleting()
 	{
@@ -175,12 +148,12 @@ class MongoDocumentTest extends CTestCase
 		$r=$c->delete();
 		$this->assertTrue($r['n'] == 1 && $r['err'] === null);
 
-		$r = User::model()->find();
-		$this->assertFalse($r->count() > 0);
+		$r = User::model()->count();
+		$this->assertFalse($r > 0);
 	}
 
 	/**
-	 * @covers EMongoDocument::findOne
+	 * @covers sammaye\mongoyii\Document::findOne
 	 */
 	public function testFindOne()
 	{
@@ -188,13 +161,12 @@ class MongoDocumentTest extends CTestCase
 		$c->username = 'sally';
 		$this->assertTrue($c->save());
 
-		$r = User::model()->findOne(array('username' => 'sally') , array('username' => 1));
-		$this->assertTrue($r->count() > 0);
+		$r = User::model()->findOne(['username' => 'sally'] , ['projection' => ['username' => 1]]);
 		$this->assertEquals('sally', $r->username);
 	}
 
 	/**
-	 * @covers EMongoDocument::findBy_id
+	 * @covers sammaye\mongoyii\Document::findBy_id
 	 */
 	public function testFindById()
 	{
@@ -212,7 +184,7 @@ class MongoDocumentTest extends CTestCase
 	}
 	
 	/**
-	 * @covers EMongoDocument::findAllByPk
+	 * @covers sammaye\mongoyii\Document::findAllByPk
 	 */
 	public function testFindAllByPk()
 	{
@@ -229,14 +201,14 @@ class MongoDocumentTest extends CTestCase
 		$r = User::model()->findAllByPk(array((string)$c->_id));
 		$this->assertTrue(!is_null($r));
 
-		$this->assertInstanceOf('EMongoCursor', $r);
+		$this->assertInstanceOf('sammaye\mongoyii\Cursor', $r);
 
-		$r = User::model()->findOne(array('_id' => $c->_id) , array('username' => 1));
+		$r = User::model()->findOne(['_id' => $c->_id] , ['projection' => ['username' => 1]]);
 		$this->assertEquals('harry', $r->username);
 	}
 
 	/**
-	 * @covers EMongoDocument::updateByPk
+	 * @covers sammaye\mongoyii\Document::updateByPk
 	 */
 	public function testUpdateByPk()
 	{
@@ -247,12 +219,12 @@ class MongoDocumentTest extends CTestCase
 		$c->updateByPk($c->_id, array('$set' => array('username' => 'gfgfgf')));
 
 		$r = User::model()->findOne(array('username' => 'gfgfgf'));
-		$this->assertInstanceOf('EMongoDocument', $r);
+		$this->assertInstanceOf('sammaye\mongoyii\Document', $r);
 		$this->assertEquals('gfgfgf', $r->username);
 	}
 
 	/**
-	 * @covers EMongoDocument::deleteByPk
+	 * @covers sammaye\mongoyii\Document::deleteByPk
 	 */
 	public function testDeleteByPk()
 	{
@@ -267,7 +239,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoDocument::updateAll
+	 * @covers sammaye\mongoyii\Document::updateAll
 	 */
 	public function testUpdateAll()
 	{
@@ -280,14 +252,14 @@ class MongoDocumentTest extends CTestCase
 		$c->updateAll(array('username' => 'frodo'), array('$set' => array('username' => 'gdgdgd')));
 
 		$r = User::model()->findOne(array('username' => 'gdgdgd'));
-		$this->assertInstanceOf('EMongoDocument', $r);
+		$this->assertInstanceOf('sammaye\mongoyii\Document', $r);
 
-		$r = User::model()->find(array('username' => 'gdgdgd'));
-		$this->assertEquals(4, $r->count());
+		$r = User::model()->count(array('username' => 'gdgdgd'));
+		$this->assertEquals(4, $r);
 	}
 
 	/**
-	 * @covers EMongoDocument::deleteAll
+	 * @covers sammaye\mongoyii\Document::deleteAll
 	 */
 	public function testDeleteAll()
 	{
@@ -312,16 +284,16 @@ class MongoDocumentTest extends CTestCase
 		$c->mainSkill = 'LoTR';
 		$this->assertTrue($c->save());
 
-		$r = User::model()->find(array('mainSkill' => 'LoTR'));
-		$this->assertEquals(10, $r->count());
+		$r = User::model()->count(array('mainSkill' => 'LoTR'));
+		$this->assertEquals(10, $r);
 
 		$c->deleteAll(array('username' => 'ringwraith'));
-		$r = User::model()->find(array('mainSkill' => 'LoTR'));
-		$this->assertEquals(1, $r->count());
+		$r = User::model()->count(array('mainSkill' => 'LoTR'));
+		$this->assertEquals(1, $r);
 	}
 
 	/**
-	 * @covers EMongoDocument::saveAttributes
+	 * @covers sammaye\mongoyii\Document::saveAttributes
 	 */
 	public function testSaveAttributes()
 	{
@@ -340,7 +312,7 @@ class MongoDocumentTest extends CTestCase
 		$c = new User;
 		$c->username = 'radagast';
 		$c->job_title = 'wizard';
-		$this->setExpectedException('EMongoException');
+		$this->setExpectedException('sammaye\mongoyii\Exception');
 		$c->saveAttributes(array('job_title'));
 	}
 
@@ -350,14 +322,14 @@ class MongoDocumentTest extends CTestCase
 		$u->username = 'sammaye';
 		$this->assertTrue($u->save());
 
-		$r = User::model()->findOne(array(), array('username' => 1));
+		$r = User::model()->findOne([], ['projection' => ['username' => 1]]);
 		$this->assertTrue($r->getIsPartial());
 
 		$p = $r->getProjectedFields();
 		$this->assertTrue(isset($p['username'], $p['_id']));
 		$this->assertFalse(isset($p['addresses']));
 
-		$r2 = User::model()->find(array(), array('username' => 1));
+		$r2 = User::model()->find([], ['projection' => ['username' => 1]]);
 		foreach($r2 as $row){
 			$this->assertTrue($row->getIsPartial());
 		}
@@ -371,7 +343,7 @@ class MongoDocumentTest extends CTestCase
 	{
 		$this->setUpRelationalModel();
 		$r = User::model()->findOne();
-		$this->assertInstanceOf('EMongoDocument', $r->one_interest);
+		$this->assertInstanceOf('sammaye\mongoyii\Document', $r->one_interest);
 	}
 
 	public function testManyRelation()
@@ -381,24 +353,6 @@ class MongoDocumentTest extends CTestCase
 		// No longer valid due to relation caching
 		//$this->assertInstanceOf('EMongoCursor', $r->many_interests);
 		$this->assertTrue(count($r->many_interests) > 0);
-	}
-
-	public function testOneDBRefRelation()
-	{
-		$this->setUpRelationalModel();
-		$r = User::model()->findOne();
-		$this->assertInstanceOf('Skill', $r->primarySkill);
-	}
-
-	public function testManyDBRefRelation()
-	{
-		$this->setUpRelationalModel();
-		$r = User::model()->findOne();
-		$secondarySkills = $r->secondarySkills;
-		$this->assertTrue(count($secondarySkills) > 0);
-		foreach($secondarySkills as $skill){
-			$this->assertInstanceOf('Skill', $skill);
-		}
 	}
 
 	public function testEmbeddedRelation()
@@ -414,7 +368,7 @@ class MongoDocumentTest extends CTestCase
 	{
 		$this->setUpRelationalModel();
 		$r = User::model()->findOne();
-		$this->assertInstanceOf('EMongoCursor', $r->where_interest);
+		$this->assertInstanceOf('sammaye\mongoyii\Cursor', $r->where_interest);
 	}
 
 	public function testFunctionalRelation()
@@ -545,7 +499,7 @@ class MongoDocumentTest extends CTestCase
 	}	
 
 	/**
-	 * @covers EMongoDocument::exists
+	 * @covers sammaye\mongoyii\Document::exists
 	 */
 	public function testExists()
 	{
@@ -556,7 +510,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoDocument::equals
+	 * @covers sammaye\mongoyii\Document::equals
 	 */
 	public function testEquals()
 	{
@@ -586,8 +540,8 @@ class MongoDocumentTest extends CTestCase
 			$this->assertTrue($c->save());
 		}
 
-		$u = User::model()->programmers()->find();
-		$this->assertTrue($u->count(true) == 2);
+		$u = User::model()->programmers()->count();
+		$this->assertTrue($u == 2);
 		User::model()->resetScope();
 	}
 
@@ -602,7 +556,7 @@ class MongoDocumentTest extends CTestCase
 		$this->assertNull($c->username);
 
 		$r = User::model()->findOne();
-		$this->assertInstanceOf('EMongoDocument', $r);
+		$this->assertInstanceOf('sammaye\mongoyii\Document', $r);
 
 		$r->username = 'fgfgfg';
 		$r->refresh();
@@ -610,7 +564,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers EMongoDocument::getAttributeLabel
+	 * @covers sammaye\mongoyii\Document::getAttributeLabel
 	 */
 	public function testGetAttributeLabel()
 	{
@@ -641,7 +595,7 @@ class MongoDocumentTest extends CTestCase
 
 		$f = new User;
 		$f->username = 'merry';
-		$this->setExpectedException('EMongoException');
+		$this->setExpectedException('sammaye\mongoyii\Exception');
 		$f->saveCounters(array('i' => 1));
 	}
 	
