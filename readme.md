@@ -4,7 +4,7 @@ A PHP7 edition of [mongoyii](http://sammaye.github.io/MongoYii) designed for and
 
 ## About this Documentation
 
-This is not a complete rewrite of the old documentation, instead it will only detail the new features/ideals behind the PHP7 extension.
+This is not a complete rewrite of the old documentation, instead it will only detail the new features/ideas behind the PHP7 extension.
 
 [Please read the old documentation first if you are new to mongoyii](http://sammaye.github.io/MongoYii).
 
@@ -34,7 +34,7 @@ and to the point: do whatever you want with it.
 ## Note About Changes
 
 Before I go into what has changed in this extension it is good to note that many of the changes are not because of my wanting to make them but because 
-the MongoDB driver and PHPLib they have released has so dramatically changed the workings from the old drivers that I was forced to conform to this new 
+the MongoDB driver and PHPLib they have released has changed the workings so dramatically from the old drivers that I was forced to conform to this new 
 standard of working.
 
 There are some parts of the driver and it's PHPLib you will like and others you definitely wont.
@@ -48,7 +48,7 @@ To install simply do (for `dev-master`):
 
 	composer require sammaye/mongoyii-php7:*
 
-[You can find the packagist reepository here](https://packagist.org/packages/sammaye/mongoyii-php7).
+[You can find the packagist repository here](https://packagist.org/packages/sammaye/mongoyii-php7).
 
 ## Namespacing
 
@@ -59,7 +59,7 @@ This extension is fully namespaced as:
 Do not worry! This does not make for too many changes for old applications. It took me 
 about 3 hours to rewrite my test application.
 
-For example here is how to declare a new model (taken from my test application):
+For example, here is how to declare a new model (taken from my test application):
 
 ```php
 use MongoDB\BSON\ObjectID;
@@ -91,7 +91,7 @@ your `main.php` (again, taken from my test application):
 
 So you see use of the namespaces is very easy to get to grips with.
 
-As a final example, let's take an behaviour:
+As a final example, let's take a behaviour:
 
 ```php
 public function behaviors()
@@ -113,11 +113,11 @@ line where it says something like:
 namespace sammaye\mongoyii\validators;
 ```
 
-Add the class name to that and you have your namespaced class.
+Add the class name to that and you have your namespace class.
 
 ## Declaring the Extension
 
-This is easily the part that has changed the most. To start off why don't we 
+This is easily the part that has changed the most. To start off, why don't I 
 show an example I use:
 
 ```php
@@ -136,7 +136,7 @@ show an example I use:
 ],
 ```
 
-Now let's break this down:
+Now, let's break this down:
 
 - I delcare the class as `sammaye\mongoyii\Client`. This is required and will not be variable.
 - The `uri` is my server connection string and follows the standard laid out in the [PHP documentation](http://php.net/manual/en/mongodb-driver-manager.construct.php)
@@ -145,8 +145,8 @@ Now let's break this down:
 - `enableProfiling` allows you to profile your queries as before
 - `db` has now changed to be an array indexed by the names of the databases you wish to connect to. The value of each index being the options for the [PHPLib `Database` object](https://github.com/mongodb/mongo-php-library/blob/master/src/Database.php)
 
-And that is basically it. The write concern and read concern and other 
-properties are now done per database as you see instead of on driver level.
+And that is basically it. The write concern, read concern, and other 
+properties are now done per database as you see instead of on client level.
 
 If you have other databases in your configuration and want to set a specific 
 one as default you can add the `active` option as shown:
@@ -215,13 +215,13 @@ This is the biggest change away from Yii1. Everything else remains the same and 
 require documenting.
 
 Basically, due to how the new driver no longer uses cursors but instead streams I have 
-recoded the EMonmgoDBCriteria object to be `Query` (like in Yii2) and it even works similar to 
+recoded the `EMongoDBCriteria` object to be `Query` (like in Yii2) and it even works similar to 
 how it does in Yii2.
 
 However, it is good to note that the `Document` functions of `find()` and `findOne()` 
 return the same as they do in normal Yii1. The return there has not changed.
 
-It is good to note that the way to query has changed through, in accordance with the driver:
+It is good to note that the way to query has changed though, in accordance with the driver:
 
 ```php
 Article::find(
@@ -236,15 +236,15 @@ Article::find(
 )
 ```
 
-This is due to how MongoDB no longer uses true cursors and make eager loaded streams. 
-As such the entire query must be defined BEFORE making it server side now.
+This is due to how MongoDB no longer uses eager loaded streams. 
+As such the entire query must be defined BEFORE forming the PHP "cursor" object now.
 
 A good place to understand how to query using the new driver is 
 to look at the Github documentation for the [MongoDB PHPLib](http://mongodb.github.io/mongo-php-library/classes/collection/).
 
 ### Scopes
 
-Due to the change in the `EMongoCriteria` you may need to rewrite scope for them to work. A good example would be:
+Due to the change in the `EMongoCriteria` you may need to rewrite model scopes for them to work. A good example would be:
 
 ```php
 [
@@ -282,24 +282,23 @@ Query logging is now much more extensive. Instead of just logging queries throug
 models it will now log all queries thanks to a small rewrite which should have been 
 in the original extension.
 
-Now whenever you get the collection from the MongoDB component in your configuration 
+Now, whenever you get the collection from the MongoDB component in your configuration 
 it will return my own custom `Collection` class which has logging tied into it.
 
 Hopefully, this should take some of the guess work out of building applications.
 
 ## Notes About Quirks
 
-
 ### Subdocuments
 
 The MongoDB driver's PHPLib returns subdocuments as `ArrayObject`s. This means you need to type cast them via `(array)$subdoc` first before you use them in display and forms etc.
 
-### BSON serialisation
+### BSON Serialisation
 
-Make sure you do not use ObjectID in your session ID. This is because of this [issue whereby 
+Make sure you do not use `ObjectID` as your yii session ID. This is because of this [issue whereby 
 you cannot serialise BSON objects yet](https://jira.mongodb.org/browse/PHPC-460).
 
-As an exmaple, her is a potential `UserIdentity` `authenticate` method you can use (taken form my example application too):
+As an exmaple, here is a potential `UserIdentity` `authenticate()` method you can use (taken from my example application too):
 ```php
 public function authenticate()
 {
@@ -318,15 +317,24 @@ public function authenticate()
 
 Notice the line: `$this->_id = (String)$record->_id;` it is extremely important or else nothing will work!
 
+### `DBRef` is Deprecated
+
+Yep, it is. If you are using it you will need to get rid of it before using this extension. 
+There is simply no functionality for handling it in the new driver.
+
 ## Stuff Not Done
 
-### GridFs
+### GridFS
 
 Not my fault. It is actually not there yet in the PHPLib!
 
+### Rewriting the Tests Folder
+
+Even though I have got my test application working on this I have not yet rewritten the 
+tests folder. This will be done ASAP.
 
 ## And We Are... Done!
 
 That should be it. Everything else is pretty much the same, cool, huh?
 
-Please do let me know if I have left anything out or need to explain something better.
+Please, do let me know if I have left anything out or need to explain something better.
