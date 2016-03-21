@@ -1,6 +1,8 @@
 <?php
 
-class Interest extends EMongoDocument
+use sammaye\mongoyii\Document;
+
+class Interest extends Document
 {
 	public $name;
 

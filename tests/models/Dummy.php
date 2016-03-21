@@ -1,6 +1,8 @@
 <?php
 
-class Dummy extends EMongoModel
+use sammaye\mongoyii\Model;
+
+class Dummy extends Model
 {
 	public $dum;
 	

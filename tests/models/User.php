@@ -1,6 +1,9 @@
 <?php
 
-class User extends EMongoDocument
+use sammaye\mongoyii\Document;
+use sammaye\mongoyii\Model;
+
+class User extends Document
 {
 	/** @virtual */
 	public $avatar;
@@ -32,14 +35,14 @@ class User extends EMongoDocument
 	public function behaviors()
 	{
 		return array(
-			'EMongoTimestampBehaviour'
+			'sammaye\mongoyii\behaviors\TimestampBehavior'
 		);
 	}
 
 	public function rules()
 	{
 		return array(
-			array('username', 'EMongoUniqueValidator', 'className' => 'User', 'attributeName' => 'username', 'on' => 'testUnqiue'),
+			array('username', 'sammaye\mongoyii\validators\UniqueValidator', 'className' => 'User', 'attributeName' => 'username', 'on' => 'testUnqiue'),
 			array('addresses', 'subdocument', 'type' => 'many', 'rules' => array(
 				array('road, town, county, post_code', 'safe'),
 				array('telephone', 'numerical', 'integerOnly' => true)
@@ -84,7 +87,7 @@ class User extends EMongoDocument
 	}
 }
 
-class SocialUrl extends EMongoModel
+class SocialUrl extends Model
 {
 	public function rules()
 	{

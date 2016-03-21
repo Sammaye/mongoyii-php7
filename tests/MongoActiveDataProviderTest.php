@@ -2,6 +2,8 @@
 
 require_once 'bootstrap.php';
 
+use sammaye\mongoyii\DataProvider;
+
 class MongoActiveDataProviderTest extends CTestCase
 {
 	public function tearDown()
@@ -22,7 +24,7 @@ class MongoActiveDataProviderTest extends CTestCase
 			$u->save();
 		}
 
-		$d = new EMongoDataProvider('User', array(
+		$d = new DataProvider('User', array(
 			'criteria' => array(
 				'condition' => array('username' => 'sammaye'),
 				'sort' => array('username' => -1),

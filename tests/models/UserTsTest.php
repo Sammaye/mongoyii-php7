@@ -1,9 +1,11 @@
 <?php
 
+use sammaye\mongoyii\Document;
+
 /**
 * Testing behaviors/EMongoTimestampBehaviour
 */
-class UserTsTest extends EMongoDocument
+class UserTsTest extends Document
 {
 	public $username;
 
@@ -11,7 +13,7 @@ class UserTsTest extends EMongoDocument
 	{
 		return array(
 			'EMongoTimestampBehaviour' => array(
-				'class' => 'EMongoTimestampBehaviour',
+				'class' => 'sammaye\mongoyii\behavior\TimestampBehavior',
 				'onScenario' => array('testMe'),
 			)
 		);
@@ -26,7 +28,7 @@ class UserTsTest extends EMongoDocument
 /**
 * Testing behaviors/EMongoTimestampBehaviour whereas here its broken
 */
-class UserTsTestBroken extends EMongoDocument
+class UserTsTestBroken extends Document
 {
 	public $username;
 
@@ -34,7 +36,7 @@ class UserTsTestBroken extends EMongoDocument
 	{
 		return array(
 			'EMongoTimestampBehaviour' => array(
-				'class' => 'EMongoTimestampBehaviour',
+				'class' => 'sammaye\mongoyii\behavior\TimestampBehavior',
 				'onScenario' => 'testMeFalse',
 			)
 		);
@@ -50,7 +52,7 @@ class UserTsTestBroken extends EMongoDocument
 * Testing behaviors/EMongoTimestampBehaviour whereas here its broken.
 * This time onScenario and notOnScenario are defined
 */
-class UserTsTestBroken2 extends EMongoDocument
+class UserTsTestBroken2 extends Document
 {
 	public $username;
 
@@ -58,7 +60,7 @@ class UserTsTestBroken2 extends EMongoDocument
 	{
 		return array(
 			'EMongoTimestampBehaviour' => array(
-				'class' => 'EMongoTimestampBehaviour',
+				'class' => 'sammaye\mongoyii\behavior\TimestampBehavior',
 				'onScenario' => array('testMeFalseOn'),
 				'notOnScenario' => array('testMeFalseOn'),
 			)

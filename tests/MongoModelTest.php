@@ -12,7 +12,7 @@ class MongoModelTest extends CTestCase
 	public function testModelCreation()
 	{
 		$d = new Dummy();
-		$this->assertInstanceOf('EMongoModel', $d);
+		$this->assertInstanceOf('sammaye\mongoyii\Model', $d);
 	}
 
 	public function testMagics()
@@ -47,7 +47,7 @@ class MongoModelTest extends CTestCase
 	{
 		$d = new Dummy();
 		$dbc = $d->getDbConnection();
-		$this->assertInstanceOf('EMongoClient', $dbc);
+		$this->assertInstanceOf('sammaye\mongoyii\Client', $dbc);
 	}
 
 	/**

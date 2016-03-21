@@ -1,6 +1,8 @@
 <?php
 
-class versionedDocument extends EMongoDocument
+sammaye\mongoyii\Document;
+
+class versionedDocument extends Document
 {
 	public function versioned()
 	{

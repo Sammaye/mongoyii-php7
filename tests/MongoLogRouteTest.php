@@ -1,11 +1,13 @@
 <?php
 require_once 'bootstrap.php';
 
+use sammaye\mongoyii\LogRoute;
+
 class MongoLogRouteTest extends CTestCase
 {
 	public function testLogRouteGetCollection()
 	{
-		$router = new EMongoLogRoute();
+		$router = new LogRoute();
 		$router->connectionId = 'mongodb_neu';
 		$this->assertEquals('mongodb_neu', $router->connectionId);
 
@@ -16,7 +18,7 @@ class MongoLogRouteTest extends CTestCase
 		$router->connectionId = 'mongodb';
 
 		$collection = $router->getMongoConnection();
-		$this->assertInstanceOf('MongoCollection', $collection);
+		$this->assertInstanceOf('sammaye\mongoyii\Collection', $collection);
 	}
 
 	public function testInsertIntoLog()

@@ -1,5 +1,7 @@
 <?php
 
+use sammaye\mongoyii\Document;
+
 /**
  * Created by IntelliJ IDEA.
  * User: soldatenko
@@ -7,7 +9,7 @@
  * Time: 6:45
  * To change this template use File | Settings | File Templates.
  */ 
-class Skill extends EMongoDocument
+class Skill extends Document
 {
 	public $name;
 	
