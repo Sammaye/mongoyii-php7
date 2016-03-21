@@ -291,6 +291,10 @@ Hopefully, this should take some of the guess work out of building applications.
 
 - The MongoDB driver's PHPLib returns subdocuments as `ArrayObject`s. This means you need to type cast them via `(array)$subdoc` first before you use them in display and forms etc.
 
+## Stuff Not Done
+
+- GridFs. Not my fault. It is actually not there yet in the PHPLib!
+
 ## And We Are... Done!
 
 That should be it. Everything else is pretty much the same, cool, huh?
