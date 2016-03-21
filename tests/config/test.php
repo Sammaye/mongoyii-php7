@@ -1,4 +1,8 @@
 <?php
+
+use MongoDB\Driver\WriteConcern;
+use MongoDB\Driver\ReadPreference;
+
 return CMap::mergeArray(
 	require ('../../../config/main.php'), 
 	array(
