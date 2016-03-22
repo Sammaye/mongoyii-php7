@@ -236,7 +236,7 @@ Article::find(
 )
 ```
 
-This is due to how MongoDB no longer uses eager loaded streams. 
+This is due to how MongoDB uses eager loaded streams. 
 As such the entire query must be defined BEFORE forming the PHP "cursor" object now.
 
 A good place to understand how to query using the new driver is 
@@ -327,11 +327,6 @@ There is simply no functionality for handling it in the new driver.
 ### GridFS
 
 Not my fault. It is actually not there yet in the PHPLib!
-
-### Rewriting the Tests Folder
-
-Even though I have got my test application working on this I have not yet rewritten the 
-tests folder. This will be done ASAP.
 
 ## And We Are... Done!
 
