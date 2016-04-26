@@ -884,7 +884,7 @@ class Document extends Model
 		
 		$query = $this->getDbCriteria();
 		if($filter instanceof Query){
-			$query->mergeWith($this->getDbCriteria());
+			$query->mergeWith($filter);
 		}else{
 			$query->andCondition($filter);
 		}
