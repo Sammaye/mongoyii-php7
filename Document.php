@@ -99,7 +99,7 @@ class Document extends Model
 
 		$scopes = $this->scopes();
 		if(isset($scopes[$name])){
-			$this->setDbCriteria($this->getDbCriteria()->mergeWith($scopes[$name]));
+			$this->getDbCriteria()->mergeWith($scopes[$name]);
 			return $this;
 		}
 		return parent::__call($name, $parameters);
