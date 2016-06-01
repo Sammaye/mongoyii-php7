@@ -14,7 +14,7 @@ class Database
 
     public function __debugInfo()
     {
-        return $this->database->__deugInfo();
+        return $this->database->__debugInfo();
     }
 
     public function __get($collectionName)
