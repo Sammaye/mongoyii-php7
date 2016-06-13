@@ -8,7 +8,7 @@ use yii;
 use CApplicationComponent;
 use CValidator;
 
-use MongoDB\Client as MongoClient;
+use MongoDB\Client as DriverClient;
 use MongoDB\Database as DriverDatabase;
 use MongoDB\Driver\WriteConcern;
 use MongoDB\Driver\ReadPreference;
@@ -36,13 +36,13 @@ class Client extends CApplicationComponent
 	 * @var string
 	 */
 	public $uri;
-	
+
 	/**
 	 * Additional options for the connection constructor
 	 * @var array
 	 */
 	public $options = [];
-	
+
 	public $driverOptions = [];
 
 	/**
@@ -56,7 +56,7 @@ class Client extends CApplicationComponent
 	 * @var boolean
 	 */
 	public $enableProfiling = false;
-	
+
 	/**
 	 * @var integer number of seconds that query results can remain valid in cache.
 	 * Use 0 or negative value to indicate not caching query results (the default behavior).
@@ -72,13 +72,13 @@ class Client extends CApplicationComponent
 	 * @see queryCacheID
 	 */
 	public $queryCachingDuration = 0;
-	
+
 	/**
 	 * @var CCacheDependency|ICacheDependency the dependency that will be used when saving query results into cache.
 	 * @see queryCachingDuration
 	 */
 	public $queryCachingDependency;
-	
+
 	/**
 	 * @var integer the number of SQL statements that need to be cached next.
 	 * If this is 0, then even if query caching is enabled, no query will be cached.
@@ -86,35 +86,35 @@ class Client extends CApplicationComponent
 	 * query cache), this property will be reduced by 1 until 0.
 	 */
 	public $queryCachingCount = 0;
-	
+
 	/**
 	 * @var string the ID of the cache application component that is used for query caching.
 	 * Defaults to 'cache' which refers to the primary cache application component.
 	 * Set this property to false if you want to disable query caching.
 	 */
 	public $queryCacheID = 'cache';
-	
+
 	/**
 	 * The Mongo Connection instance
 	 * @var Mongo MongoClient
 	 */
 	private $client;
-	
+
 	/**
 	 * The database instance
 	 * @var MongoDB
 	 */
 	private $dbs;
-	
+
 	private $activeDb;
-	
+
 	/**
 	 * Caches reflection properties for our objects so we don't have
 	 * to keep getting them
 	 * @var array
 	 */
 	private $meta = array();
-	
+
 	/**
 	 * The default action is to find a getX whereby X is the $k param
 	 * you input.
@@ -128,7 +128,7 @@ class Client extends CApplicationComponent
 		}
 		return $this->selectDatabase($k);
 	}
-	
+
 	/**
 	 * Will call a function on the database or error out stating that the function does not exist
 	 * @param string $name
@@ -142,13 +142,13 @@ class Client extends CApplicationComponent
 		}
 		return call_user_func_array(array($this->getClient(), $name), $parameters);
 	}
-	
+
 	public function init()
 	{
 		if(!extension_loaded('mongodb')){
 			throw new EMongoException(
 				Yii::t(
-					'yii', 
+					'yii',
 					'We could not find the MongoDB extension ( http://php.net/manual/en/mongodb.installation.php ), please install it'
 				)
 			);
@@ -157,16 +157,16 @@ class Client extends CApplicationComponent
 		// We copy this function to add the subdocument validator as a built in validator
 		CValidator::$builtInValidators['subdocument'] = 'sammaye\mongoyii\validators\SubdocumentValidator';
 
-		$this->client = new MongoClient($this->uri, $this->options, $this->driverOptions);
+		$this->client = new DriverClient($this->uri, $this->options, $this->driverOptions);
 
 		if(!is_array($this->db)){
 			throw new Exception(Yii::t(
-				'yii', 
+				'yii',
 				'The db option needs to be an array of databases indexed by name'
 			));
 		}else{
 			foreach($this->db as $k => $v){
-				
+
 				$options = [];
 				if(is_numeric($k)){
 					$name = $v;
@@ -174,11 +174,11 @@ class Client extends CApplicationComponent
 					$name = $k;
 					$options = $v;
 				}
-				
+
 				$this->selectDatabase($name, $options);
 			}
 		}
-		
+
 		parent::init();
 	}
 
@@ -202,7 +202,7 @@ class Client extends CApplicationComponent
 		if(isset($options['active'])){
 			$this->activeDb = $name;
 		}
-		
+
 		if($name){
 			if(isset($this->dbs[$name])){
 				return $this->dbs[$name];
@@ -213,20 +213,20 @@ class Client extends CApplicationComponent
 			);
 			return $db;
 		}
-		
+
 		// If we have a default database set let's go looking for it
 		if($this->activeDb && isset($this->dbs[$this->activeDb])){
 			return $this->dbs[$this->activeDb];
 		}elseif($this->activeDb){
 			throw new Exception($name . ' is default but does not exist');
 		}
-		
+
 		// By default let's return the first in the list
 		foreach($this->dbs as $db){
 			return $db;
 		}
 	}
-	
+
 	public function dropDatabase($databaseName, $options = [])
 	{
 		if($this->client->dropDatabase($databaseName, $options)){
@@ -246,7 +246,7 @@ class Client extends CApplicationComponent
 		}
 		return $this->getClient()->selectCollection($databaseName, $collectionName, $options);
 	}
-	
+
 	/**
 	 * Sets the document cache for any particular document (EMongoDocument/EMongoModel)
 	 * sent in as the first parameter of this function.
@@ -261,22 +261,22 @@ class Client extends CApplicationComponent
 			(get_class($o) != 'Document' && get_class($o) != 'Model') /* We can't cache the model */
 		){
 			$_meta = array();
-			
+
 			$reflect = new ReflectionClass(get_class($o));
 			$class_vars = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC); // Pre-defined doc attributes
-			
+
 			foreach($class_vars as $prop){
-				
+
 				if($prop->isStatic()){
 					continue;
 				}
-				
+
 				$docBlock = $prop->getDocComment();
 				$field_meta = array(
 					'name' => $prop->getName(),
-					'virtual' => $prop->isProtected() || preg_match('/@virtual/i', $docBlock) <= 0 ? false : true 
+					'virtual' => $prop->isProtected() || preg_match('/@virtual/i', $docBlock) <= 0 ? false : true
 				);
-				
+
 				// Lets fetch the data type for this field
 				// Since we always fetch the data type for this field we make a regex that will only pick out the first
 				if(preg_match('/@var ([a-zA-Z]+)/', $docBlock, $matches) > 0){
@@ -287,7 +287,7 @@ class Client extends CApplicationComponent
 			$this->meta[get_class($o)] = $_meta;
 		}
 	}
-	
+
 	/**
 	 * Get a list of the fields (attributes) for a document from cache
 	 * @param string $name
@@ -298,7 +298,7 @@ class Client extends CApplicationComponent
 	{
 		$doc = isset($this->meta[$name]) ? $this->meta[$name] : array();
 		$fields = array();
-		
+
 		foreach($doc as $name => $opts){
 			if($include_virtual || !$opts['virtual']){
 				$fields[] = $name;
@@ -306,7 +306,7 @@ class Client extends CApplicationComponent
 		}
 		return $fields;
 	}
-	
+
 	/**
 	 * Just gets the document cache for a model
 	 * @param string $name
@@ -327,14 +327,14 @@ class Client extends CApplicationComponent
 	public function createMongoIdFromTimestamp($yourTimestamp)
 	{
 		static $inc = 0;
-		
+
 		$ts = pack('N', $yourTimestamp);
 		$m = substr(md5(gethostname ()), 0, 3);
 		$pid = pack('n', getmypid());
 		$trail = substr(pack('N', $inc ++), 1, 3);
-		
+
 		$bin = sprintf("%s%s%s%s", $ts, $m, $pid, $trail);
-		
+
 		$id = '';
 		for($i = 0; $i < 12; $i ++){
 			$id .= sprintf("%02X", ord($bin[$i]));
@@ -350,7 +350,7 @@ class Client extends CApplicationComponent
 	 * and remain valid for the specified duration.
 	 * If the same query is executed again, the result may be fetched from cache directly
 	 * without actually executing the SQL statement.
-	 * 
+	 *
 	 * @param integer $duration
 	 *        	the number of seconds that query results may remain valid in cache.
 	 *        	If this is 0, the caching will be disabled.
@@ -370,7 +370,7 @@ class Client extends CApplicationComponent
 		$this->queryCachingCount = $queryCount;
 		return $this;
 	}
-	
+
 	public function getSerialisedQuery($criteria = array(), $fields = array(), $sort = array(), $skip = 0, $limit = null)
 	{
 		$query = array(
@@ -382,7 +382,7 @@ class Client extends CApplicationComponent
 		);
 		return json_encode($query);
 	}
-	
+
 	/**
 	 *
 	 * @return array the first element indicates the number of query statements executed,
@@ -412,7 +412,7 @@ class Client extends CApplicationComponent
 		$timings = $logger->getProfilingResults(null, 'extensions.MongoYii.EMongoDocument.deleteAll');
 		$count += count($timings);
 		$time += array_sum($timings);
-		
+
 		return array($count, $time);
 	}
 }
