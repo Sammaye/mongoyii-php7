@@ -8,7 +8,7 @@ use yii;
 use CApplicationComponent;
 use CValidator;
 
-use MongoDB\Client;
+use MongoDB\Client as MongoClient;
 use MongoDB\Database as DriverDatabase;
 use MongoDB\Driver\WriteConcern;
 use MongoDB\Driver\ReadPreference;
@@ -157,7 +157,7 @@ class Client extends CApplicationComponent
 		// We copy this function to add the subdocument validator as a built in validator
 		CValidator::$builtInValidators['subdocument'] = 'sammaye\mongoyii\validators\SubdocumentValidator';
 
-		$this->client = new Client($this->uri, $this->options, $this->driverOptions);
+		$this->client = new MongoClient($this->uri, $this->options, $this->driverOptions);
 
 		if(!is_array($this->db)){
 			throw new Exception(Yii::t(
