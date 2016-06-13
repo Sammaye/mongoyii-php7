@@ -2,7 +2,7 @@
 
 namespace sammaye\mongoyii;
 
-use MongoDB\Driver\Cursor;
+use MongoDB\Driver\Cursor as DriverCursor;
 
 use IteratorIterator;
 use Iterator;
@@ -29,19 +29,19 @@ class Cursor implements Iterator, Countable
 	 * @var string
 	 */
 	public $modelClass;
-	
+
 	/**
 	 * @var EMongoDocument
 	 */
 	public $model;
-	
+
 	public $partial;
-	
+
 	/**
 	 * @var array|MongoCursor|EMongoDocument[]
 	 */
 	private $cursor = array();
-	
+
 	/**
 	 * @var EMongoDocument
 	 */
@@ -62,11 +62,11 @@ class Cursor implements Iterator, Countable
 			$this->modelClass = get_class($modelClass);
 			$this->model = $modelClass;
 		}
-		
+
 		$it = new IteratorIterator($cursor);
 		$it->rewind();
 		$this->cursor = $it;
-		
+
 		if($options['partial']){
 			$this->partial = true;
 		}
@@ -83,16 +83,16 @@ class Cursor implements Iterator, Countable
 	 */
 	public function __call($method, $params = [])
 	{
-		if($this->cursor instanceof Cursor && method_exists($this->cursor, $method)){
+		if($this->cursor instanceof DriverCursor && method_exists($this->cursor, $method)){
 			return call_user_func_array(array($this->cursor, $method), $params);
 		}
 		throw new Exception(Yii::t(
-			'yii', 
-			'Call to undefined function {method} on the cursor', 
+			'yii',
+			'Call to undefined function {method} on the cursor',
 			['{method}' => $method]
 		));
 	}
-	
+
 	public function count()
 	{
 		throw new Exception('Count can no longer be done on the cursor!!');
@@ -121,8 +121,8 @@ class Cursor implements Iterator, Countable
 			return $this->current = $this->cursor->current();
 		}else{
 			return $this->current = $this->model->populateRecord(
-				$this->cursor->current(), 
-				true, 
+				$this->cursor->current(),
+				true,
 				$this->partial
 			);
 		}
