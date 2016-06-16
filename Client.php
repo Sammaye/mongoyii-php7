@@ -43,6 +43,9 @@ class Client extends CApplicationComponent
 	 */
 	public $options = [];
 
+	/**
+	 * @var array
+     */
 	public $driverOptions = [];
 
 	/**
@@ -56,6 +59,12 @@ class Client extends CApplicationComponent
 	 * @var boolean
 	 */
 	public $enableProfiling = false;
+	
+	/**
+	 * Connection status
+	 * @var bool
+	 */
+	protected $connectFlag = false;
 
 	/**
 	 * @var integer number of seconds that query results can remain valid in cache.
@@ -157,8 +166,19 @@ class Client extends CApplicationComponent
 		// We copy this function to add the subdocument validator as a built in validator
 		CValidator::$builtInValidators['subdocument'] = 'sammaye\mongoyii\validators\SubdocumentValidator';
 
-		$this->client = new DriverClient($this->uri, $this->options, $this->driverOptions);
 
+
+		parent::init();
+	}
+
+	/**
+	 * init Mongodb Connect
+	 * @throws \sammaye\mongoyii\Exception
+	 */
+	public function connect() {
+		if($this->connectFlag) return ;
+		$this->client = new DriverClient($this->uri, $this->options, $this->driverOptions);
+		$this->connectFlag = true;
 		if(!is_array($this->db)){
 			throw new Exception(Yii::t(
 				'yii',
@@ -178,8 +198,6 @@ class Client extends CApplicationComponent
 				$this->selectDatabase($name, $options);
 			}
 		}
-
-		parent::init();
 	}
 
 	/**
@@ -199,6 +217,7 @@ class Client extends CApplicationComponent
 	 */
 	public function selectDatabase($name = null, $options = [])
 	{
+		$this->connect();
 		if(isset($options['active'])){
 			$this->activeDb = $name;
 		}
