@@ -165,9 +165,6 @@ class Client extends CApplicationComponent
 
 		// We copy this function to add the subdocument validator as a built in validator
 		CValidator::$builtInValidators['subdocument'] = 'sammaye\mongoyii\validators\SubdocumentValidator';
-
-
-
 		parent::init();
 	}
 
@@ -176,7 +173,9 @@ class Client extends CApplicationComponent
 	 * @throws \sammaye\mongoyii\Exception
 	 */
 	public function connect() {
-		if($this->connectFlag) return ;
+		if($this->connectFlag){
+			return ;
+		}
 		$this->client = new DriverClient($this->uri, $this->options, $this->driverOptions);
 		$this->connectFlag = true;
 		if(!is_array($this->db)){
