@@ -248,4 +248,53 @@ class Collection
 		
 		return $res;
     }
+    
+    /**
+     * Updates a document and returns it.
+     * @param array $condition query condition
+     * @param array $update update criteria
+     * @param array $fields fields to be returned
+     * @param array $options list of options in format: optionName => optionValue.
+     * @return array|null the original document, or the modified document when $options['new'] is set.
+     * @throws Exception on failure.
+     * @see http://www.php.net/manual/en/mongocollection.findandmodify.php
+     */
+    public function findAndModify($condition, $update, $options = [])
+    {
+		$token = "mongoyii\\" . 
+			$this->collection->getCollectionName() . 
+			".findAndModify({\$condition: " . json_encode($condition) . 
+			", \$update: " . json_encode($update) . 
+			", \$options: " . json_encode($options) . 
+			" })";
+		
+		Yii::trace($token, "mongoyii\Collection");
+  
+		if($this->client->enableProfiling){
+			Yii::beginProfile($token, 'mongoyii\Collection.findAndModify');
+		}
+
+        try {
+            if(isset($options['remove']) && $options['remove']){
+                $result = $this->collection->findOneAndDelete($condition, $options);
+            }elseif(isset($options['update']) && $options['update']){
+                if(isset($options['upsert']) && $options['upsert']){
+                    $result = $this->collection->findOneAndReplace($condition, $update, $options);
+                }else{
+                    $result = $this->collection->findOneAndUpdate($condition, $update, $options);
+                }
+            }else{
+                throw new Exception('Must enter a operation type for findAndModify');
+            }
+			if($this->client->enableProfiling){
+				Yii::endProfile($token, 'mongoyii\Collection.findAndModify');
+			}
+            return $result;
+        } catch (\Exception $e) {
+			if($this->client->enableProfiling){
+				Yii::endProfile($token, 'mongoyii\Collection.findAndModify');
+			}
+            throw new Exception($e->getMessage(), (int) $e->getCode(), $e);
+        }
+    }
 }
