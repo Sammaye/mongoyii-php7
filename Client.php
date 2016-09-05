@@ -45,7 +45,7 @@ class Client extends CApplicationComponent
 
 	/**
 	 * @var array
-     */
+	 */
 	public $driverOptions = [];
 
 	/**
