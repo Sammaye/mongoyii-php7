@@ -15,11 +15,11 @@ use MongoDB\Driver\ReadPreference;
 use MongoDB\BSON\ObjectID;
 
 use sammaye\mongoyii\Database;
-use sammaye\mongoyii\Collection;
+use sammaye\monogyii\Collection;
 use sammaye\mongoyii\Exception;
 
 /**
- * EMongoClient
+ * Client
  *
  * The MongoDB and MongoClient class combined.
  *
@@ -83,7 +83,7 @@ class Client extends CApplicationComponent
 	public $queryCachingDuration = 0;
 
 	/**
-	 * @var CCacheDependency|ICacheDependency the dependency that will be used when saving query results into cache.
+	 * @var \CCacheDependency|\ICacheDependency the dependency that will be used when saving query results into cache.
 	 * @see queryCachingDuration
 	 */
 	public $queryCachingDependency;
@@ -105,13 +105,13 @@ class Client extends CApplicationComponent
 
 	/**
 	 * The Mongo Connection instance
-	 * @var Mongo MongoClient
+	 * @var  DriverClient
 	 */
 	private $client;
 
 	/**
 	 * The database instance
-	 * @var MongoDB
+	 * @var \MongoDB
 	 */
 	private $dbs;
 
@@ -155,7 +155,7 @@ class Client extends CApplicationComponent
 	public function init()
 	{
 		if(!extension_loaded('mongodb')){
-			throw new EMongoException(
+			throw new Exception(
 				Yii::t(
 					'yii',
 					'We could not find the MongoDB extension ( http://php.net/manual/en/mongodb.installation.php ), please install it'
@@ -202,7 +202,7 @@ class Client extends CApplicationComponent
 	/**
 	 * Gets the connection object
 	 * Use this to access the Mongo/MongoClient instance within the extension
-	 * @return Mongo MongoClient
+	 * @return DriverClient
 	 */
 	public function getClient()
 	{
@@ -211,8 +211,10 @@ class Client extends CApplicationComponent
 
 	/**
 	 * Selects a different database
-	 * @param $name
-	 * @return MongoDB
+	 * @param null $name
+	 * @param array $options
+	 * @return null|\sammaye\mongoyii\Database
+	 * @throws \sammaye\mongoyii\Exception
 	 */
 	public function selectDatabase($name = null, $options = [])
 	{
@@ -226,7 +228,7 @@ class Client extends CApplicationComponent
 				return $this->dbs[$name];
 			}
 			$db = $this->dbs[$name] = new Database(
-				$this->getclient()->selectDatabase($name, $options),
+				$this->getClient()->selectDatabase($name, $options),
 				$this
 			);
 			return $db;
@@ -243,6 +245,8 @@ class Client extends CApplicationComponent
 		foreach($this->dbs as $db){
 			return $db;
 		}
+
+		return null;
 	}
 
 	public function dropDatabase($databaseName, $options = [])
@@ -254,8 +258,10 @@ class Client extends CApplicationComponent
 
 	/**
 	 * A wrapper for the original processing
-	 * @param string $name
-	 * @return MongoCollection
+	 * @param string $collectionName
+	 * @param string $databaseName
+	 * @param array $options
+	 * @return \MongoCollection
 	 */
 	public function selectCollection($collectionName, $options = [], $databaseName = null)
 	{
@@ -340,7 +346,7 @@ class Client extends CApplicationComponent
 	 * This function is not actively used it is
 	 * here as a helper for anyone who needs it
 	 * @param int $yourTimestamp
-	 * @return MongoID
+	 * @return \MongoId
 	 */
 	public function createMongoIdFromTimestamp($yourTimestamp)
 	{
@@ -372,7 +378,7 @@ class Client extends CApplicationComponent
 	 * @param integer $duration
 	 *        	the number of seconds that query results may remain valid in cache.
 	 *        	If this is 0, the caching will be disabled.
-	 * @param CCacheDependency|ICacheDependency $dependency
+	 * @param \CCacheDependency|\ICacheDependency $dependency
 	 *        	the dependency that will be used when saving
 	 *        	the query results into cache.
 	 * @param integer $queryCount

@@ -4,12 +4,14 @@ namespace sammaye\mongoyii;
 
 use MongoDB\GridFS\Bucket;
 
-use sammaye\mongoyii\Collection;
+use sammaye\monogyii\Collection;
 use sammaye\mongoyii\Exception;
 
 class Database
 {
     public $client;
+	
+	/** @var  \MongoDB\Database */
     public $database;
 
     public function __debugInfo()

@@ -2,13 +2,17 @@
 
 namespace sammaye\monogyii;
 
+use sammaye\mongoyii\Client;
 use Yii;
 
-use monogyii\Exception;
+use sammaye\mongoyii\Exception;
 
 class Collection
 {
+	/** @var  Client */
 	public $client;
+
+	/** @var  \MongoDB\Collection */
     public $collection;
     
     public function __debugInfo()
@@ -172,7 +176,7 @@ class Collection
     	
 		Yii::trace(
 			"Executing updateAll: {\$query: $textFilter, \$document: $textUpdate, \$options: $textOptions }", 
-			"mongoyii\Collection"
+			"mongoyii\\Collection"
 		);
 		
 		if($this->client->enableProfiling){
