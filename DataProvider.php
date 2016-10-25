@@ -26,7 +26,7 @@ class DataProvider extends CActiveDataProvider
 	 * The AR finder instance (eg <code>Post::model()</code>).
 	 * This property can be set by passing the finder instance as the first parameter
 	 * to the constructor. For example, <code>Post::model()->published()</code>.
-	 * @var EMongoModel
+	 * @var Model
 	 */
 	public $model;
 
@@ -44,18 +44,18 @@ class DataProvider extends CActiveDataProvider
 
 	/**
 	 * The internal MongoDB cursor as a MongoCursor instance
-	 * @var EMongoCursor|MongoCursor
+	 * @var \MongoCursor
 	 */
 	private $_cursor;
 
 	/**
-	 * @var EMongoSort
+	 * @var Sort
 	 */
 	private $_sort;
 
 	/**
 	 * Creates the EMongoDataProvider instance
-	 * @param string|EMongoDocument $modelClass
+	 * @param string|Document $modelClass
 	 * @param array $config
 	 */
 	public function __construct($modelClass, $config = array())
@@ -79,7 +79,7 @@ class DataProvider extends CActiveDataProvider
 
 	/**
 	 * @see CActiveDataProvider::getCriteria()
-	 * @return array
+	 * @return array|Query
 	 */
 	public function getCriteria()
 	{
@@ -88,7 +88,8 @@ class DataProvider extends CActiveDataProvider
 
 	/**
 	 * @see CActiveDataProvider::setCriteria()
-	 * @param array|EMongoCriteria $value
+	 * @param array|Query $value
+	 * @throws Exception
 	 */
 	public function setCriteria($value)
 	{
@@ -178,7 +179,7 @@ class DataProvider extends CActiveDataProvider
 	 * Returns the sort object. We don't use the newer getSort function because it does not have the same functionality
 	 * between 1.1.10 and 1.1.13, the functionality we need is actually in 1.1.13 only
 	 * @param string $className
-	 * @return CSort|EMongoSort|false - the sorting object. If this is false, it means the sorting is disabled.
+	 * @return \CSort|Sort|false - the sorting object. If this is false, it means the sorting is disabled.
 	 */
 	public function getSort($className = 'sammaye\mongoyii\Sort')
 	{
