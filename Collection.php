@@ -1,6 +1,6 @@
 <?php
 
-namespace sammaye\monogyii;
+namespace sammaye\mongoyii;
 
 use sammaye\mongoyii\Client;
 use Yii;
@@ -9,10 +9,10 @@ use sammaye\mongoyii\Exception;
 
 class Collection
 {
-	/** @var  Client */
-	public $client;
+    /** @var  Client */
+    public $client;
 
-	/** @var  \MongoDB\Collection */
+    /** @var  \MongoDB\Collection */
     public $collection;
     
     public function __debugInfo()
