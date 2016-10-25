@@ -15,7 +15,6 @@ use MongoDB\Driver\ReadPreference;
 use MongoDB\BSON\ObjectID;
 
 use sammaye\mongoyii\Database;
-use sammaye\monogyii\Collection;
 use sammaye\mongoyii\Exception;
 
 /**
