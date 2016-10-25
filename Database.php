@@ -4,7 +4,7 @@ namespace sammaye\mongoyii;
 
 use MongoDB\GridFS\Bucket;
 
-use sammaye\monogyii\Collection;
+use sammaye\mongoyii\Collection;
 use sammaye\mongoyii\Exception;
 
 class Database
