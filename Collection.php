@@ -50,13 +50,13 @@ class Collection
 		
 		Yii::trace("Executing find: $serialisedQuery", 'mongoyii\Collection');
 		
-		if($this->getDbConnection()->enableProfiling){
+		if($this->client->enableProfiling){
 			$token = "mongoyii\\$collectionName.find($serialisedQuery)";
 			Yii::beginProfile($token, 'mongoyii\Collection.findOne');
 		}
 				
 		$res = $this->collection->findOne($filter, $options);
-		if($this->getDbConnection()->enableProfiling){
+		if($this->client->enableProfiling){
 			Yii::endProfile($token, 'mongoyii\Collection.findOne');
 		}
 		return $res;
@@ -73,13 +73,13 @@ class Collection
 		
 		Yii::trace("Executing find: $serialisedQuery", 'mongoyii\Collection');
 		
-		if($this->getDbConnection()->enableProfiling){
+		if($this->client->enableProfiling){
 			$token = "mongoyii\\$collectionName.find($serialisedQuery)";
 			Yii::beginProfile($token, 'mongoyii\Collection.find');
 		}
 				
 		$res = $this->collection->find($filter, $options);
-		if($this->getDbConnection()->enableProfiling){
+		if($this->client->enableProfiling){
 			Yii::endProfile($token, 'mongoyii\Collection.find');
 		}
 		return $res;
