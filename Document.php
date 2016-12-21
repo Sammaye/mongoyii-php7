@@ -39,7 +39,7 @@ class Document extends Model
 
 	/**
 	 * Holds criteria information for scopes
-	 * @var array|null
+	 * @var Query|null
 	 */
 	private $_criteria;
 
@@ -1277,10 +1277,10 @@ class Document extends Model
 
 	/**
 	 * Sets the db criteria for this model
-	 * @param array $criteria
-	 * @return array
+	 * @param Query $criteria
+	 * @return Query
 	 */
-	public function setDbCriteria(array $criteria)
+	public function setDbCriteria(Query $criteria)
 	{
 		return $this->_criteria = $criteria;
 	}
