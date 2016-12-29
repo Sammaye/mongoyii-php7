@@ -331,7 +331,7 @@ class Query extends CComponent
 	
 	public function getDb()
 	{
-		return $this->getDbConnection()->selectDatabase();
+		return $this->getDbConnection()->selectDatabase($this->model->getCollection()->getDatabaseName());
 	}
 
 	/**
