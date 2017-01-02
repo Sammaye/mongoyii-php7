@@ -62,7 +62,9 @@ class Query extends CComponent
 	private $_options = ['modifiers' => []];
 
 	private $_modelClass;
-
+        
+        private $_databaseName = null;
+        
 	/**
 	 * Constructor.
 	 * @param array $data - criteria initial property values (indexed by property name)
@@ -331,7 +333,7 @@ class Query extends CComponent
 	
 	public function getDb()
 	{
-		return $this->getDbConnection()->selectDatabase();
+		return $this->getDbConnection()->selectDatabase($this->_databaseName);
 	}
 
 	/**
@@ -442,7 +444,8 @@ class Query extends CComponent
 	protected function queryInternal($db = null, $function = 'find')
 	{
 		if($db !== null){
-			self::$db = $db;
+//			self::$db = $db;
+                    $this->_databaseName = $db;
 		}
 		
 		$cursor = null;
