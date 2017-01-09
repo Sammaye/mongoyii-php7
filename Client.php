@@ -265,7 +265,7 @@ class Client extends CApplicationComponent
 	public function selectCollection($collectionName, $options = [], $databaseName = null)
 	{
 		if(!$databaseName){
-			$databaseName = $this->selectDatabase()->databaseName;
+			$databaseName = $this->selectDatabase()->getDatabaseName();
 		}
 		return $this->getClient()->selectCollection($databaseName, $collectionName, $options);
 	}
