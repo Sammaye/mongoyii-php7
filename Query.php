@@ -336,7 +336,7 @@ class Query extends CComponent
 	public function setDb($db)
 	{
 		if($db instanceof Database){
-			$this->databaseName = $db->database->getDatabaseName();
+			$this->databaseName = $db->getDatabaseName();
 		}elseif($db instanceof MongoDatabase){
 			$this->databaseName = $db->getDatabaseName();
 		}else{
@@ -349,7 +349,7 @@ class Query extends CComponent
 		$name = $this->databaseName;
 		if($this->model){
 			// Get DB name from model
-			$name = $this->model->getCollection()->database->getDatabaseName();
+			$name = $this->model->getCollection()->getDatabaseName();
 		}
 		
 		// Will select default database if name is null
