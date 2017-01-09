@@ -4,12 +4,14 @@ namespace sammaye\mongoyii;
 
 use MongoDB\BSON\Regex;
 use MongoDB\Driver\Cursor as MongoCursor;
+use MongoDB\Database as MongoDatabase;
 
 use Yii;
 use CComponent;
 use CMap;
 
 use sammaye\mongoyii\Client;
+use sammaye\mongoyii\Database;
 use sammaye\mongoyii\Document;
 use sammaye\mongoyii\Cursor;
 use sammaye\mongoyii\Exception;
@@ -62,6 +64,8 @@ class Query extends CComponent
 	private $_options = ['modifiers' => []];
 
 	private $_modelClass;
+	
+	private $databaseName;
 
 	/**
 	 * Constructor.
@@ -329,9 +333,27 @@ class Query extends CComponent
 		));
 	}
 	
+	public function setDb($db)
+	{
+		if($db instanceof Database){
+			$this->databaseName = $db->database->getDatabaseName();
+		}elseif($db instanceof MongoDatabase){
+			$this->databaseName = $db->getDatabaseName();
+		}else{
+			$this->databaseName = $db;
+		}
+	}
+	
 	public function getDb()
 	{
-		return $this->getDbConnection()->selectDatabase();
+		$name = $this->databaseName;
+		if($this->model){
+			// Get DB name from model
+			$name = $this->model->getCollection()->database->getDatabaseName();
+		}
+		
+		// Will select default database if name is null
+		return $this->getDbConnection()->selectDatabase($name);
 	}
 
 	/**
