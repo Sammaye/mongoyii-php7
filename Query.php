@@ -171,7 +171,7 @@ class Query extends CComponent
 			}
 		}
 		
-		$this->_sort = CMap::mergeArray($sort, $this->_sort);
+		$this->_sort = CMap::mergeArray($this->_sort, $sort);
 		return $this;
 	}
 
