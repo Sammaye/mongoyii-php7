@@ -1,13 +1,13 @@
 {
-    "name": "sammaye/mongoyii-php7",
+    "name": "kuzdo/mongoyii-php7",
     "description": "A Yii MongoDB ORM for PHP7",
     "keywords": ["mongodb","orm","yii","php7"],
     "type": "yii-extension",
     "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "Sammaye",
-            "homepage": "http://sammaye.wordpress.com"
+            "name": "Kuzdo",
+            "homepage": "https://kuzdowicz.pro/"
         }
     ],
 	"require": {
@@ -15,6 +15,6 @@
 		"mongodb/mongodb": "^1.0.0"
 	},
     "autoload": {
-        "psr-4": { "sammaye\\mongoyii\\": "" }
+        "psr-4": { "kuzdo\\mongoyii\\": "" }
     }
 }
