@@ -892,7 +892,7 @@ class Document extends Model
 		$query->model = $this;
 
 		$this->resetScope(false);
-		return $query->all();
+		return $query->all($this->getCollection()->getDatabaseName());
 	}
 
 	/**
