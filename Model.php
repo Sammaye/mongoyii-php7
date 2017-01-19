@@ -697,6 +697,6 @@ class Model extends CModel
 	 */
 	public function getBSONDocument()
 	{
-		return bson_encode($this->getRawDocument());
+		return MongoDB\BSON\fromPHP($this->getRawDocument());
 	}
 }

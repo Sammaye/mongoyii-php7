@@ -102,6 +102,7 @@ class Query extends CComponent
 	public function setFrom($name)
 	{
 		$this->_from = $name;	
+		return $this;
 	}
 
 	public function getFrom()
