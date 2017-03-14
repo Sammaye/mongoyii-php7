@@ -43,7 +43,7 @@ class Database
 	
 	public function getGridFs($options = [])
 	{
-		return new Bucket($this->client, $this->database->getDatabaseName(), $options);
+		return new Bucket($this->client->getManager(), $this->database->getDatabaseName(), $options);
 	}
 
 	public function __toString()
