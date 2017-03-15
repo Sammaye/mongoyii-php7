@@ -15,6 +15,6 @@
 		"mongodb/mongodb": "^1.0.0"
 	},
     "autoload": {
-        "psr-4": { "sammaye\\mongoyii\\": "" }
+        "psr-4": { "koma136\\mongoyii\\": "" }
     }
 }
