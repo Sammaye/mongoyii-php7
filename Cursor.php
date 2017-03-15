@@ -1,6 +1,6 @@
 <?php
 
-namespace sammaye\mongoyii;
+namespace koma136\mongoyii;
 
 use MongoDB\Driver\Cursor as DriverCursor;
 
@@ -9,8 +9,8 @@ use Iterator;
 use Countable;
 use Yii;
 
-use sammaye\mongoyii\Document;
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Document;
+use koma136\mongoyii\Exception;
 
 /**
  * Cursor

@@ -1,11 +1,11 @@
 <?php
 
-namespace sammaye\mongoyii;
+namespace koma136\mongoyii;
 
 use MongoDB\GridFS\Bucket;
 
-use sammaye\mongoyii\Collection;
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Collection;
+use koma136\mongoyii\Exception;
 
 class Database
 {

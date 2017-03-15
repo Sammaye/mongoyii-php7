@@ -1,6 +1,6 @@
 <?php
 
-use sammaye\mongoyii\Document;
+use koma136\mongoyii\Document;
 
 /**
 * Testing behaviors/EMongoTimestampBehaviour
@@ -13,7 +13,7 @@ class UserTsTest extends Document
 	{
 		return array(
 			'EMongoTimestampBehaviour' => array(
-				'class' => 'sammaye\mongoyii\behavior\TimestampBehavior',
+				'class' => 'koma136\mongoyii\behavior\TimestampBehavior',
 				'onScenario' => array('testMe'),
 			)
 		);
@@ -36,7 +36,7 @@ class UserTsTestBroken extends Document
 	{
 		return array(
 			'EMongoTimestampBehaviour' => array(
-				'class' => 'sammaye\mongoyii\behavior\TimestampBehavior',
+				'class' => 'koma136\mongoyii\behavior\TimestampBehavior',
 				'onScenario' => 'testMeFalse',
 			)
 		);
@@ -60,7 +60,7 @@ class UserTsTestBroken2 extends Document
 	{
 		return array(
 			'EMongoTimestampBehaviour' => array(
-				'class' => 'sammaye\mongoyii\behavior\TimestampBehavior',
+				'class' => 'koma136\mongoyii\behavior\TimestampBehavior',
 				'onScenario' => array('testMeFalseOn'),
 				'notOnScenario' => array('testMeFalseOn'),
 			)

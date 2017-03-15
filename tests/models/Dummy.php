@@ -1,6 +1,6 @@
 <?php
 
-use sammaye\mongoyii\Model;
+use koma136\mongoyii\Model;
 
 class Dummy extends Model
 {

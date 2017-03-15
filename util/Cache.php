@@ -1,11 +1,11 @@
 <?php
 
-namespace sammaye\mongoyii\util;
+namespace koma136\mongoyii\util;
 
 use Yii;
 use CCache;
 
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Exception;
 
 /**
  * Extends the Yii class 'CCache' to store cached data in mongoDB.

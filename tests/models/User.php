@@ -1,7 +1,7 @@
 <?php
 
-use sammaye\mongoyii\Document;
-use sammaye\mongoyii\Model;
+use koma136\mongoyii\Document;
+use koma136\mongoyii\Model;
 
 class User extends Document
 {
@@ -35,14 +35,14 @@ class User extends Document
 	public function behaviors()
 	{
 		return array(
-			'sammaye\mongoyii\behaviors\TimestampBehavior'
+			'koma136\mongoyii\behaviors\TimestampBehavior'
 		);
 	}
 
 	public function rules()
 	{
 		return array(
-			array('username', 'sammaye\mongoyii\validators\UniqueValidator', 'className' => 'User', 'attributeName' => 'username', 'on' => 'testUnqiue'),
+			array('username', 'koma136\mongoyii\validators\UniqueValidator', 'className' => 'User', 'attributeName' => 'username', 'on' => 'testUnqiue'),
 			array('addresses', 'subdocument', 'type' => 'many', 'rules' => array(
 				array('road, town, county, post_code', 'safe'),
 				array('telephone', 'numerical', 'integerOnly' => true)

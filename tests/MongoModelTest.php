@@ -12,7 +12,7 @@ class MongoModelTest extends CTestCase
 	public function testModelCreation()
 	{
 		$d = new Dummy();
-		$this->assertInstanceOf('sammaye\mongoyii\Model', $d);
+		$this->assertInstanceOf('koma136\mongoyii\Model', $d);
 	}
 
 	public function testMagics()
@@ -41,17 +41,17 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Model::getDbConnection
+	 * @covers koma136\mongoyii\Model::getDbConnection
 	 */
 	public function testGetDbConnection()
 	{
 		$d = new Dummy();
 		$dbc = $d->getDbConnection();
-		$this->assertInstanceOf('sammaye\mongoyii\Client', $dbc);
+		$this->assertInstanceOf('koma136\mongoyii\Client', $dbc);
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Model::getDocument
+	 * @covers koma136\mongoyii\Model::getDocument
 	 */
 	public function testGetDocument()
 	{
@@ -65,7 +65,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Model::getRawDocument
+	 * @covers koma136\mongoyii\Model::getRawDocument
 	 */
 	public function testGetRawDocument()
 	{
@@ -79,7 +79,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Model::getJSONDocument
+	 * @covers koma136\mongoyii\Model::getJSONDocument
 	 */
 	public function testGetJSONDocument()
 	{
@@ -93,7 +93,7 @@ class MongoModelTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Model::getBSONDocument
+	 * @covers koma136\mongoyii\Model::getBSONDocument
 	 */
 	public function testGetBSONDocument()
 	{

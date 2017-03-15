@@ -1,6 +1,6 @@
 <?php
 
-sammaye\mongoyii\Document;
+koma136\mongoyii\Document;
 
 class versionedDocument extends Document
 {

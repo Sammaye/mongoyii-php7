@@ -113,11 +113,11 @@ class MongoDocumentTest extends CTestCase
 	public function testModel()
 	{
 		$c = User::model();
-		$this->assertInstanceOf('sammaye\mongoyii\Document', $c);
+		$this->assertInstanceOf('koma136\mongoyii\Document', $c);
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::save
+	 * @covers koma136\mongoyii\Document::save
 	 */
 	public function testSaving()
 	{
@@ -138,7 +138,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::delete
+	 * @covers koma136\mongoyii\Document::delete
 	 */
 	public function testDeleting()
 	{
@@ -153,7 +153,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::findOne
+	 * @covers koma136\mongoyii\Document::findOne
 	 */
 	public function testFindOne()
 	{
@@ -166,7 +166,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::findBy_id
+	 * @covers koma136\mongoyii\Document::findBy_id
 	 */
 	public function testFindById()
 	{
@@ -184,7 +184,7 @@ class MongoDocumentTest extends CTestCase
 	}
 	
 	/**
-	 * @covers sammaye\mongoyii\Document::findAllByPk
+	 * @covers koma136\mongoyii\Document::findAllByPk
 	 */
 	public function testFindAllByPk()
 	{
@@ -201,14 +201,14 @@ class MongoDocumentTest extends CTestCase
 		$r = User::model()->findAllByPk(array((string)$c->_id));
 		$this->assertTrue(!is_null($r));
 
-		$this->assertInstanceOf('sammaye\mongoyii\Cursor', $r);
+		$this->assertInstanceOf('koma136\mongoyii\Cursor', $r);
 
 		$r = User::model()->findOne(['_id' => $c->_id] , ['projection' => ['username' => 1]]);
 		$this->assertEquals('harry', $r->username);
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::updateByPk
+	 * @covers koma136\mongoyii\Document::updateByPk
 	 */
 	public function testUpdateByPk()
 	{
@@ -219,12 +219,12 @@ class MongoDocumentTest extends CTestCase
 		$c->updateByPk($c->_id, array('$set' => array('username' => 'gfgfgf')));
 
 		$r = User::model()->findOne(array('username' => 'gfgfgf'));
-		$this->assertInstanceOf('sammaye\mongoyii\Document', $r);
+		$this->assertInstanceOf('koma136\mongoyii\Document', $r);
 		$this->assertEquals('gfgfgf', $r->username);
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::deleteByPk
+	 * @covers koma136\mongoyii\Document::deleteByPk
 	 */
 	public function testDeleteByPk()
 	{
@@ -239,7 +239,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::updateAll
+	 * @covers koma136\mongoyii\Document::updateAll
 	 */
 	public function testUpdateAll()
 	{
@@ -252,14 +252,14 @@ class MongoDocumentTest extends CTestCase
 		$c->updateAll(array('username' => 'frodo'), array('$set' => array('username' => 'gdgdgd')));
 
 		$r = User::model()->findOne(array('username' => 'gdgdgd'));
-		$this->assertInstanceOf('sammaye\mongoyii\Document', $r);
+		$this->assertInstanceOf('koma136\mongoyii\Document', $r);
 
 		$r = User::model()->count(array('username' => 'gdgdgd'));
 		$this->assertEquals(4, $r);
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::deleteAll
+	 * @covers koma136\mongoyii\Document::deleteAll
 	 */
 	public function testDeleteAll()
 	{
@@ -293,7 +293,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::saveAttributes
+	 * @covers koma136\mongoyii\Document::saveAttributes
 	 */
 	public function testSaveAttributes()
 	{
@@ -312,7 +312,7 @@ class MongoDocumentTest extends CTestCase
 		$c = new User;
 		$c->username = 'radagast';
 		$c->job_title = 'wizard';
-		$this->setExpectedException('sammaye\mongoyii\Exception');
+		$this->setExpectedException('koma136\mongoyii\Exception');
 		$c->saveAttributes(array('job_title'));
 	}
 
@@ -343,7 +343,7 @@ class MongoDocumentTest extends CTestCase
 	{
 		$this->setUpRelationalModel();
 		$r = User::model()->findOne();
-		$this->assertInstanceOf('sammaye\mongoyii\Document', $r->one_interest);
+		$this->assertInstanceOf('koma136\mongoyii\Document', $r->one_interest);
 	}
 
 	public function testManyRelation()
@@ -368,7 +368,7 @@ class MongoDocumentTest extends CTestCase
 	{
 		$this->setUpRelationalModel();
 		$r = User::model()->findOne();
-		$this->assertInstanceOf('sammaye\mongoyii\Cursor', $r->where_interest);
+		$this->assertInstanceOf('koma136\mongoyii\Cursor', $r->where_interest);
 	}
 
 	public function testFunctionalRelation()
@@ -499,7 +499,7 @@ class MongoDocumentTest extends CTestCase
 	}	
 
 	/**
-	 * @covers sammaye\mongoyii\Document::exists
+	 * @covers koma136\mongoyii\Document::exists
 	 */
 	public function testExists()
 	{
@@ -510,7 +510,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::equals
+	 * @covers koma136\mongoyii\Document::equals
 	 */
 	public function testEquals()
 	{
@@ -556,7 +556,7 @@ class MongoDocumentTest extends CTestCase
 		$this->assertNull($c->username);
 
 		$r = User::model()->findOne();
-		$this->assertInstanceOf('sammaye\mongoyii\Document', $r);
+		$this->assertInstanceOf('koma136\mongoyii\Document', $r);
 
 		$r->username = 'fgfgfg';
 		$r->refresh();
@@ -564,7 +564,7 @@ class MongoDocumentTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Document::getAttributeLabel
+	 * @covers koma136\mongoyii\Document::getAttributeLabel
 	 */
 	public function testGetAttributeLabel()
 	{
@@ -595,7 +595,7 @@ class MongoDocumentTest extends CTestCase
 
 		$f = new User;
 		$f->username = 'merry';
-		$this->setExpectedException('sammaye\mongoyii\Exception');
+		$this->setExpectedException('koma136\mongoyii\Exception');
 		$f->saveCounters(array('i' => 1));
 	}
 	

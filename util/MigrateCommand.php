@@ -1,14 +1,14 @@
 <?php
 
-namespace sammaye\mongoyii;
+namespace koma136\mongoyii;
 
 use Yii;
 use MigrateCommand as BaseMigrateCommand;
 use CConsoleCommand;
 use CHtml;
 
-use sammaye\mongoyii\Client;
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Client;
+use koma136\mongoyii\Exception;
 
 
 Yii::import('system.cli.commands.MigrateCommand');

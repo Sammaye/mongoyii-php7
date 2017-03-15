@@ -1,6 +1,6 @@
 <?php
 
-namespace sammaye\mongoyii;
+namespace koma136\mongoyii;
 
 use MongoDB\BSON\Regex;
 use MongoDB\Driver\Cursor as MongoCursor;
@@ -10,11 +10,11 @@ use Yii;
 use CComponent;
 use CMap;
 
-use sammaye\mongoyii\Client;
-use sammaye\mongoyii\Database;
-use sammaye\mongoyii\Document;
-use sammaye\mongoyii\Cursor;
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Client;
+use koma136\mongoyii\Database;
+use koma136\mongoyii\Document;
+use koma136\mongoyii\Cursor;
+use koma136\mongoyii\Exception;
 
 /**
  * This is the extensions version of CDbCriteria.

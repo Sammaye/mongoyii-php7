@@ -2,7 +2,7 @@
 
 require_once 'bootstrap.php';
 
-use sammaye\mongoyii\DataProvider;
+use koma136\mongoyii\DataProvider;
 
 class MongoActiveDataProviderTest extends CTestCase
 {
@@ -14,7 +14,7 @@ class MongoActiveDataProviderTest extends CTestCase
 
 	/**
 	 * I am only testing my public API, not that of the CActiveDataProvider in general
-	 * @covers sammaye\mongoyii\DataProvider
+	 * @covers koma136\mongoyii\DataProvider
 	 */
 	public function testFetchData()
 	{

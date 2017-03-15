@@ -1,6 +1,6 @@
 <?php
 
-namespace sammaye\mongoyii;
+namespace koma136\mongoyii;
 
 use ReflectionClass;
 
@@ -14,8 +14,8 @@ use MongoDB\Driver\WriteConcern;
 use MongoDB\Driver\ReadPreference;
 use MongoDB\BSON\ObjectID;
 
-use sammaye\mongoyii\Database;
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Database;
+use koma136\mongoyii\Exception;
 
 /**
  * Client
@@ -163,13 +163,13 @@ class Client extends CApplicationComponent
 		}
 
 		// We copy this function to add the subdocument validator as a built in validator
-		CValidator::$builtInValidators['subdocument'] = 'sammaye\mongoyii\validators\SubdocumentValidator';
+		CValidator::$builtInValidators['subdocument'] = 'koma136\mongoyii\validators\SubdocumentValidator';
 		parent::init();
 	}
 
 	/**
 	 * init Mongodb Connect
-	 * @throws \sammaye\mongoyii\Exception
+	 * @throws \koma136\mongoyii\Exception
 	 */
 	public function connect() {
 		if($this->connectFlag){
@@ -212,8 +212,8 @@ class Client extends CApplicationComponent
 	 * Selects a different database
 	 * @param null $name
 	 * @param array $options
-	 * @return null|\sammaye\mongoyii\Database
-	 * @throws \sammaye\mongoyii\Exception
+	 * @return null|\koma136\mongoyii\Database
+	 * @throws \koma136\mongoyii\Exception
 	 */
 	public function selectDatabase($name = null, $options = [])
 	{

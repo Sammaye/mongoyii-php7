@@ -1,6 +1,6 @@
 <?php
 
-use sammaye\mongoyii\Document;
+use koma136\mongoyii\Document;
 
 /**
  * Created by IntelliJ IDEA.

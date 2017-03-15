@@ -1,6 +1,6 @@
 <?php
 
-namespace sammaye\mongoyii\validators;
+namespace koma136\mongoyii\validators;
 
 use MongoDB\BSON\Regex;
 
@@ -8,7 +8,7 @@ use Yii;
 use CValidator;
 use CHtml;
 
-use sammaye\mongoyii\Document;
+use koma136\mongoyii\Document;
 
 
 /**

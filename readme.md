@@ -54,7 +54,7 @@ To install simply do (for `dev-master`):
 
 This extension is fully namespaced as:
 
-	sammaye\mongoyii
+	koma136\mongoyii
 
 Do not worry! This does not make for too many changes for old applications. It took me 
 about 3 hours to rewrite my test application.
@@ -65,7 +65,7 @@ For example, here is how to declare a new model (taken from my test application)
 use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\UTCDateTime;
 
-use sammaye\mongoyii\Document;
+use koma136\mongoyii\Document;
 
 /**
  * Represents the article itself, and all of its data
@@ -82,10 +82,10 @@ your `main.php` (again, taken from my test application):
 
 ```php
 'session' => array(
-	'class' => 'sammaye\mongoyii\util\Session',
+	'class' => 'koma136\mongoyii\util\Session',
 ),
 'cache' => array(
-	'class' => 'sammaye\mongoyii\util\Cache',
+	'class' => 'koma136\mongoyii\util\Cache',
 ),
 ```
 
@@ -98,7 +98,7 @@ public function behaviors()
 {
 	return [
 		'TimestampBehavior' => [
-			'class' => 'sammaye\mongoyii\behaviors\TimestampBehavior' 
+			'class' => 'koma136\mongoyii\behaviors\TimestampBehavior' 
 			// adds a nice create_time and update_time Mongodate to our docs
 		]
 	];
@@ -110,7 +110,7 @@ which namespace to use look up the file in your project and look at the first
 line where it says something like:
 
 ```php
-namespace sammaye\mongoyii\validators;
+namespace koma136\mongoyii\validators;
 ```
 
 Add the class name to that and you have your namespace class.
@@ -122,7 +122,7 @@ show an example I use:
 
 ```php
 'mongodb' => [
-	'class' => 'sammaye\mongoyii\Client',
+	'class' => 'koma136\mongoyii\Client',
 	'uri' => 'mongodb://sam:blah@localhost:27017/admin',
 	'options' => [],
 	'driverOptions' => [],
@@ -138,7 +138,7 @@ show an example I use:
 
 Now, let's break this down:
 
-- I delcare the class as `sammaye\mongoyii\Client`. This is required and will not be variable.
+- I delcare the class as `koma136\mongoyii\Client`. This is required and will not be variable.
 - The `uri` is my server connection string and follows the standard laid out in the [PHP documentation](http://php.net/manual/en/mongodb-driver-manager.construct.php)
 - The `options` directly relate to the `uri` options in the [PHP documentation](http://php.net/manual/en/mongodb-driver-manager.construct.php) as well, allowing replica set connections etc
 - And the same goes for driver options which are also in the [PHP documentation](http://php.net/manual/en/mongodb-driver-manager.construct.php)

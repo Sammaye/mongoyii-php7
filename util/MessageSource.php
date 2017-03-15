@@ -1,12 +1,12 @@
 <?php
 
-namespace sammaye\mongoyii\util;
+namespace koma136\mongoyii\util;
 
 use Yii;
 use CMessageSource;
 
-use sammaye\mongoyii\Client;
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Client;
+use koma136\mongoyii\Exception;
 
 /**
  * CDbMessageSource class file.

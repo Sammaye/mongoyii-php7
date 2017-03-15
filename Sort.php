@@ -1,12 +1,12 @@
 <?php
 
-namespace sammaye\mongoyii;
+namespace koma136\mongoyii;
 
 use Yii;
 use CSort;
 
-use sammaye\mongoyii\Document;
-use sammaye\mongoyii\Exception;
+use koma136\mongoyii\Document;
+use koma136\mongoyii\Exception;
 
 /**
  * EMongoSort

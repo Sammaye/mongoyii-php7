@@ -1,7 +1,7 @@
 <?php
 require_once 'bootstrap.php';
 
-use sammaye\mongoyii\LogRoute;
+use koma136\mongoyii\LogRoute;
 
 class MongoLogRouteTest extends CTestCase
 {
@@ -18,7 +18,7 @@ class MongoLogRouteTest extends CTestCase
 		$router->connectionId = 'mongodb';
 
 		$collection = $router->getMongoConnection();
-		$this->assertInstanceOf('sammaye\mongoyii\Collection', $collection);
+		$this->assertInstanceOf('koma136\mongoyii\Collection', $collection);
 	}
 
 	public function testInsertIntoLog()

@@ -2,8 +2,8 @@
 
 require_once 'bootstrap.php';
 
-use sammaye\mongoyii\Document;
-use sammaye\mongoyii\Query;
+use koma136\mongoyii\Document;
+use koma136\mongoyii\Query;
 
 class MongoCursorTest extends CTestCase
 {
@@ -17,7 +17,7 @@ class MongoCursorTest extends CTestCase
 
 		$c = User::model()->find();
 
-		$this->assertInstanceOf('sammaye\mongoyii\Cursor', $c);
+		$this->assertInstanceOf('koma136\mongoyii\Cursor', $c);
 		$this->assertTrue(count(iterator_to_array($c)) > 0);
 
 		foreach($c as $doc){
@@ -30,7 +30,7 @@ class MongoCursorTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Cursor::__construct
+	 * @covers koma136\mongoyii\Cursor::__construct
 	 */
 	public function testDirectInstantiation()
 	{
@@ -38,7 +38,7 @@ class MongoCursorTest extends CTestCase
 	}
 
 	/**
-	 * @covers sammaye\mongoyii\Query
+	 * @covers koma136\mongoyii\Query
 	 */
 	public function testEMongoCriteria()
 	{
@@ -57,7 +57,7 @@ class MongoCursorTest extends CTestCase
 		
 		$sc = iterator_to_array($c);
 
-		$this->assertInstanceOf('sammaye\mongoyii\Cursor', $c);
+		$this->assertInstanceOf('koma136\mongoyii\Cursor', $c);
 		$this->assertTrue(count($sc) > 0);
 		// see also $this->testSkipLimit()
 		$this->assertEquals(3, count($sc));
@@ -74,7 +74,7 @@ class MongoCursorTest extends CTestCase
 
 		$c = User::model()->find([],['skip' => 1, 'limit' => 3]);
 
-		$this->assertInstanceOf('sammaye\mongoyii\Cursor', $c);
+		$this->assertInstanceOf('koma136\mongoyii\Cursor', $c);
 		$this->assertTrue(count(iterator_to_array($c)) == 3);
 	}
 
