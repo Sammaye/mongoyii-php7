@@ -1,5 +1,5 @@
 {
-    "name": "sammaye/mongoyii-php7",
+    "name": "koma136/mongoyii-php7",
     "description": "A Yii MongoDB ORM for PHP7",
     "keywords": ["mongodb","orm","yii","php7"],
     "type": "yii-extension",
