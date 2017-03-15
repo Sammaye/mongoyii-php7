@@ -177,7 +177,7 @@ class File extends Document
 	 */
 	public function populateRecord($attributes, $callAfterFind = true, $partial = false)
 	{
-		if($attributes === false){
+		if($attributes === false || $attributes === null){
 			return null;
 		}
 		// the cursor will actually input a MongoGridFSFile object as the "document"
