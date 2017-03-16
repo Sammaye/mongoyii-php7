@@ -1287,7 +1287,7 @@ class Document extends Model
 
 	/**
 	 * Gets the collection for this model
-	 * @return MongoCollection
+	 * @return Collection
 	 */
 	public function getCollection()
 	{

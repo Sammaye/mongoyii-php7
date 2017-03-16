@@ -17,6 +17,10 @@ use koma136\mongoyii\Exception;
  *
  * It can accept an input file from $_FILES via ::populate and can also do find() and findOne() on the files collection.
  * This file is specifically designed for uploading files from a form to GridFS and is merely a helper, IT IS IN NO WAY REQUIRED.
+ *
+ *
+ * @property string $filename
+ * @property string $name
  */
 class File extends Document
 {
@@ -31,29 +35,28 @@ class File extends Document
      */
     private $_file;
 
-    private $_filename;
-
-    // Helper functions to get some common functionality on this class
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            [
+                'filename',
+                'filter',
+                'filter' => 'trim'
+            ],
+            ['filename', 'length', 'min' => 1],
+        ];
+    }
 
     /**
      * @return string
      */
     public function getFilename()
     {
-        return $this->_filename;
+        return $this->filename;
     }
-
-    /**
-     * @param  $filename
-     * @return boolean
-     */
-    public function setFilename($filename)
-    {
-        $this->_filename = $filename;
-
-        return true;
-    }
-
 
     /**
      * @return int|bool
@@ -82,6 +85,14 @@ class File extends Document
             return file_get_contents($this->getFilename());
         }
         return false;
+    }
+
+    /**
+     * @param $stream
+     */
+    public function downloadToStream($stream)
+    {
+        $this->getBucket()->downloadToStream($this->_id, $stream);
     }
 
     /**
@@ -118,7 +129,7 @@ class File extends Document
     /**
      * Returns the static model of the specified AR class.
      * @param string $className
-     * @return EMongoDocument - User the static model class
+     * @return File|\EMongoDocument - User the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -191,13 +202,12 @@ class File extends Document
         if($attributes === false || $attributes === null){
             return null;
         }
+
         // the cursor will actually input a MongoGridFSFile object as the "document"
         // so what we wanna do is get the attributes or metadata attached to the file object
         // set it as our attributes and then set this classes file as the first param we got
-        $file = $attributes;
-        $attributes = $file->file;
         $record = $this->instantiate($attributes);
-        $record->setFile($file);
+//		$record->setFile($file);
         $record->setScenario('update');
         $record->setIsNewRecord(false);
         $record->init();
@@ -225,12 +235,18 @@ class File extends Document
      *
      * The only difference between the normal insert is that this uses the storeFile function on the GridFS object
      * @see EMongoDocument::insert()
-     * @param array $attributes
-     * @return bool
-     * @throws EMongoException
+     * @param  array $attributes
+     * @return boolean
+     * @throws \Exception
      */
     public function insert($attributes = null)
     {
+        if(empty($this->getFilename())) {
+            $this->addError('filename', 'Filename is empty!');
+
+            return false;
+        }
+
         if(!$this->getIsNewRecord()){
             throw new Exception(Yii::t('yii','The active record cannot be inserted to database because it is not new.'));
         }
@@ -239,6 +255,7 @@ class File extends Document
         }
 
         $this->trace(__FUNCTION__);
+
         if($attributes === null){
             $document = $this->filterRawDocument($this->getAttributes($attributes));
         }else{
@@ -254,14 +271,16 @@ class File extends Document
             $this->profile('extensions.MongoYii.EMongoFile.insert({$document:' . json_encode($document) . '})', 'extensions.MongoYii.EMongoFile.insert');
         }
 
+
         if($_id = $this->getBucket()->uploadFromStream($this->getFilename(), $this->getFile())){ // The key change
             $this->_id = $_id;
             $this->afterSave();
             $this->setIsNewRecord(false);
             $this->setScenario('update');
 
-            return $this->update($document);
+            return $this->update($attributes);
         }
+
         return false;
     }
 
@@ -276,6 +295,25 @@ class File extends Document
             ->getGridFS([
                             'bucketName' => $this->collectionPrefix()
                         ]);
+    }
+
+    /**
+     * Gets the collection for this model
+     * @return MongoCollection
+     */
+    public function getCollection()
+    {
+        return $this->getDbConnection()->selectDatabase()->{$this->getFileCollectionName()};
+    }
+
+    public function getFileCollectionName()
+    {
+        return "{$this->collectionPrefix()}.files";
+    }
+
+    public function collectionName()
+    {
+        return $this->getFileCollectionName();
     }
 
     /**
