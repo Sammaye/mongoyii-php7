@@ -222,6 +222,9 @@ class Client extends CApplicationComponent
 			$this->activeDb = $name;
 		}
 
+        $options['writeConcern']   = new \MongoDB\Driver\WriteConcern(1);
+        $options['readPreference'] = new \MongoDB\Driver\ReadPreference(\MongoDB\Driver\ReadPreference::RP_PRIMARY);
+
 		if($name){
 			if(isset($this->dbs[$name])){
 				return $this->dbs[$name];
