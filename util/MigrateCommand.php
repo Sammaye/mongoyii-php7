@@ -1,6 +1,6 @@
 <?php
 
-namespace sammaye\mongoyii;
+namespace sammaye\mongoyii\util;
 
 use Yii;
 use MigrateCommand as BaseMigrateCommand;
@@ -24,7 +24,7 @@ Yii::import('system.cli.commands.MigrateCommand');
  * <pre>
  *   'commandMap' => array(
  *       'migratemongo' => array(
- *           'class' => 'mongoyii\util\MigrateCommand'
+ *           'class' => 'sammaye\mongoyii\util\MigrateCommand'
  *       )
  *   )
  * </pre>
@@ -207,7 +207,7 @@ EOD;
 	protected function getDbConnection()
 	{
 		if($this->_db !== null){
-			return $this->_db;
+			return $this->_db->selectDatabase();
 		}elseif(($this->_db = Yii::app ()->getComponent($this->connectionID)) instanceof Client){
 			return $this->_db->selectDatabase();
 		}
@@ -218,6 +218,10 @@ EOD;
 	
 	protected function getMigrationHistory($limit)
 	{
+	    if($this->getDbConnection()->{$this->collectionName}->count() === 0) {
+	        $this->createMigrationHistoryTable();
+        }
+
 		return CHtml::listData(
 			iterator_to_array(
 				$this->getDbConnection()->{$this->collectionName}->find([], ['sort' => ['version' => -1], 'limit' => $limit])
