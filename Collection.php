@@ -117,7 +117,7 @@ class Collection
 			);
 		}
 		
-		$res = $this->collection->insertOne($documents, $options);
+		$res = $this->collection->insertMany($documents, $options);
 		
 		if($this->client->enableProfiling){
 			Yii::endProfile(
@@ -174,7 +174,7 @@ class Collection
 			Yii::beginProfile($token, 'mongoyii\Collection.updateMany');
 		}
 		
-		$res = $this->collection->updateOne($filter, $update, $options);
+		$res = $this->collection->updateMany($filter, $update, $options);
 		
 		if($this->client->enableProfiling){
 			Yii::endProfile($token, 'mongoyii\Collection.updateMany');
