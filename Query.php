@@ -364,7 +364,7 @@ class Query extends CComponent
 	 * @param boolean $partialMatch
 	 * @return EMongoCriteria
 	 */
-	public function compare($column, $value = null, $partialMatch = false)
+	public function compare($column, $value = null, $partialMatch = false, $cast=null)
 	{
 		$query = array();
 		
@@ -391,6 +391,13 @@ class Query extends CComponent
 				){
 					$value = (int)$value;
 				}
+			}
+			
+			switch($cast){
+				case 'float':
+					$value=(float)$value;
+				break;
+				//@todo, other types
 			}
 
 			switch($op){
