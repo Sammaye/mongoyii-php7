@@ -1165,7 +1165,7 @@ class Document extends Model
 	 * @param array $options // All other options for input to the command
 	 * @return mixed
 	 */
-	public function mapreduce($map, $reduce, $finalize = null, $out, $query = array(), $options = array())
+	public function mapreduce($map, $reduce, $finalize = null, $out = ['inline' => 1], $query = [], $options = [])
 	{
 		return $this
 			->getDbConnection()
